@@ -11,16 +11,24 @@ module ImagineBreaker
     end
 
     post '/images' do
-      image = Image.new(params[:url], params[:tags].split(","))
+      content_type :json
+      json = JSON.parse request.body.read
+
+      image = Image.new(json['url'], json['tags'].split(","))
       image.save
-      redirect '/index.html'
+      image.to_json
     end
 
     get '/images' do
-      Image.all.to_json
+      content_type :json
+
+      images = Image.all
+      images.to_json
     end
 
     get %r{/images/(.+)$} do
+      content_type :json
+
       Image.where(params[:captures].first.split("/")).to_json
     end
 

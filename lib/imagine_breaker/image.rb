@@ -18,14 +18,22 @@ module ImagineBreaker
 
     def save
       redis.sadd "no_keyword", @url
+      redis.sadd @url, @tags
       @tags.each do |tag|
         redis.sadd tag, @url
       end
     end
 
     def find(tags)
-      puts tags.class
-      redis.sinter(tags)
+      images = []
+      redis.sinter(tags).each do |url|
+        images << Image.new(url, redis.sinter(url).to_a)
+      end
+      images
+    end
+
+    def to_json(args = nil)
+      {url: @url, tags: @tags}.to_json
     end
 
     private

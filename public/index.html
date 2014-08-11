@@ -2,13 +2,25 @@
 <html>
   <head>
     <title>ImagineBreaker</title>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/vue/0.10.5/vue.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/superagent/0.15.7/superagent.min.js"></script>
   </head>
   <body>
-    <h1>ImagineBreaker</h1>
-    <form action="/images" method="POST" enctype="multipart/form-data">
-      <input type="text" name="url" placeholder="URL" />
-      <input type="text" name="tags" placeholder="tags" />
-      <input type="submit" name="btn" value="POST" />
-    </form>
+    <div id="main">
+      <h1>ImagineBreaker</h1>
+      <div>
+        <input type="text" v-model="url" placeholder="URL" />
+        <input type="text" v-model="tags" placeholder="tags" />
+        <input type="button" v-on="click:register" value="登録" />
+      </div>
+      <div>
+        <label>検索</label>
+        <input type="text" v-model="searchImage" placeholder="Search" />
+      </div>
+      <div v-repeat="imagesurl">
+        <img v-attr="src:url" />
+      </div>
+    </div>
+    <script src="script.js"></script>
   </body>
 </html>
